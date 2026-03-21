@@ -1,7 +1,10 @@
 package game.engine.monsters;
+
+import game.engine.Constants;
 import game.engine.Role;
 
-public abstract class Monster implements Comparable<Monster>{
+public abstract class Monster implements Comparable<Monster> {
+
     private final String name;
     private final String description;
     private Role role;
@@ -16,13 +19,14 @@ public abstract class Monster implements Comparable<Monster>{
         this.name = name;
         this.description = description;
         this.originalRole = originalRole;
-        this.energy = energy;
         this.role = originalRole;
-        this.position = 0;
+        this.energy = energy;
+        this.position = Constants.STARTING_POSITION;
+        this.confusionTurns = 0;
         this.frozen = false;
         this.shielded = false;
-        this.confusionTurns = 0;
     }
+
     public String getName() {
         return name;
     }
@@ -35,6 +39,10 @@ public abstract class Monster implements Comparable<Monster>{
         return role;
     }
 
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public Role getOriginalRole() {
         return originalRole;
     }
@@ -43,40 +51,40 @@ public abstract class Monster implements Comparable<Monster>{
         return energy;
     }
 
+    public void setEnergy(int energy) {
+        if (energy < Constants.MIN_ENERGY) {
+            this.energy = Constants.MIN_ENERGY;
+        } else {
+            this.energy = energy;
+        }
+    }
+
     public int getPosition() {
         return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position % Constants.BOARD_SIZE;
     }
 
     public boolean isFrozen() {
         return frozen;
     }
 
-    public boolean isShielded() {
-        return shielded;
-    }
-
-    public int getConfusionTurns() {
-        return confusionTurns;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
     public void setFrozen(boolean frozen) {
         this.frozen = frozen;
     }
 
+    public boolean isShielded() {
+        return shielded;
+    }
+
     public void setShielded(boolean shielded) {
         this.shielded = shielded;
+    }
+
+    public int getConfusionTurns() {
+        return confusionTurns;
     }
 
     public void setConfusionTurns(int confusionTurns) {
@@ -84,8 +92,7 @@ public abstract class Monster implements Comparable<Monster>{
     }
 
     @Override
-    public int compareTo(Monster o){
-        return this.getPosition() - o.getPosition();
+    public int compareTo(Monster o) {
+        return this.position - o.position;
     }
-
 }
