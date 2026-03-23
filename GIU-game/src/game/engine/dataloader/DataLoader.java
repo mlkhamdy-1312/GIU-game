@@ -9,7 +9,6 @@ import game.engine.monsters.*;
 import game.engine.Role;
 
 public class DataLoader {
-
 	private static final String CARDS_FILE_NAME = "cards.csv";
 	private static final String CELLS_FILE_NAME = "cells.csv";
 	private static final String MONSTERS_FILE_NAME = "monsters.csv";
@@ -25,7 +24,7 @@ public class DataLoader {
 			String name = data[1];
 			String description = data[2];
 			int rarity = Integer.parseInt(data[3]);
-
+		try{
 			switch(cardType){
 				case "SWAPPER" :
 					cards.add(new SwapperCard(name, description, rarity));
@@ -45,8 +44,11 @@ public class DataLoader {
 					int duration = Integer.parseInt(data[4]);
 					cards.add(new ConfusionCard(name, description, rarity, duration));
 					break;
-					
+					default: throw new InvalidCSVFormat(line);
 			}
+		}
+		catch(ArrayIndexOutOfBoundsException | IllegalArgumentException e){
+		throw new InvalidCSVFormat(line);}
 		}
 		br.close();
 		return cards;
@@ -57,12 +59,10 @@ public class DataLoader {
         ArrayList<Cell> cells = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(CELLS_FILE_NAME));
         String line;
-        line = br.readLine();
-        while (line != null) {
+        while ((line = br.readLine())!= null) {
             if (line.trim().isEmpty()) continue;
             String[] fields = line.split(",");
 			 String name = fields[0].trim();
-
             try {
                 if (fields.length == 3) {
                         Role role = Role.valueOf(fields[1].trim().toUpperCase());
