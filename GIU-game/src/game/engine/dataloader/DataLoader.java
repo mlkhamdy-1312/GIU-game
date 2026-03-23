@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 import game.engine.cards.*;
 import game.engine.cells.*;
+import game.engine.exceptions.InvalidCSVFormat;
 import game.engine.monsters.*;
 import game.engine.Role;
 
@@ -44,9 +45,51 @@ public class DataLoader {
 					int duration = Integer.parseInt(data[4]);
 					cards.add(new ConfusionCard(name, description, rarity, duration));
 					break;
+					
 			}
 		}
 		br.close();
 		return cards;
 	}
+
+
+ public static ArrayList<Cell> readCells() throws IOException {
+        ArrayList<Cell> cells = new ArrayList<>();
+        BufferedReader br = new BufferedReader(new FileReader(CELLS_FILE_NAME));
+        String line;
+
+        line = br.readLine();
+        while (line != null) {
+            if (line.trim().isEmpty()) continue;
+            String[] fields = line.split(",");
+			 String name = fields[0].trim();
+
+            try {
+                if (fields.length == 3) {
+                    String roleOrEffect = fields[1].trim();
+                        Role role = Role.valueOf(roleOrEffect.toUpperCase());
+                        int energy = Integer.parseInt(fields[2].trim());
+                        cells.add(new DoorCell(name, role, energy));
+                } else if (fields.length == 2) {
+                    int effect = Integer.parseInt(fields[1].trim());
+                    if (effect > 0) {
+                        cells.add(new ConveyorBelt(name, effect));
+                    } else {
+                        cells.add(new ContaminationSock(name, effect));
+                    }
+                } else {
+                    throw new InvalidCSVFormat(line);
+                }
+            } catch (NumberFormatException e) {
+                throw new InvalidCSVFormat(line);
+            }
+        }
+
+        br.close();
+        return cells;
+    }
+
 }
+
+
+
