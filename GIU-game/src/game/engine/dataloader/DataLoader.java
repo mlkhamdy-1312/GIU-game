@@ -57,7 +57,6 @@ public class DataLoader {
         ArrayList<Cell> cells = new ArrayList<>();
         BufferedReader br = new BufferedReader(new FileReader(CELLS_FILE_NAME));
         String line;
-
         line = br.readLine();
         while (line != null) {
             if (line.trim().isEmpty()) continue;
@@ -66,8 +65,7 @@ public class DataLoader {
 
             try {
                 if (fields.length == 3) {
-                    String roleOrEffect = fields[1].trim();
-                        Role role = Role.valueOf(roleOrEffect.toUpperCase());
+                        Role role = Role.valueOf(fields[1].trim().toUpperCase());
                         int energy = Integer.parseInt(fields[2].trim());
                         cells.add(new DoorCell(name, role, energy));
                 } else if (fields.length == 2) {
@@ -83,9 +81,10 @@ public class DataLoader {
             } catch (NumberFormatException e) {
                 throw new InvalidCSVFormat(line);
             }
+			br.close();
         }
 
-        br.close();
+        
         return cells;
     }
 
