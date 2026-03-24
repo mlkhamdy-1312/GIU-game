@@ -15,11 +15,10 @@ public class DataLoader {
 	
 	public static ArrayList<Card> readCards() throws IOException{
 		ArrayList<Card> cards = new ArrayList<>();
-		try(BufferedReader br = new BufferedReader(new FileReader(CARDS_FILE_NAME))){
+		BufferedReader br = new BufferedReader(new FileReader(CARDS_FILE_NAME));
 			String line;
 			while((line = br.readLine()) != null){
 				String[] data = line.split(",");
-				try{
 					String cardType = data[0].trim();
 					String name = data[1].trim();
 					String description = data[2].trim();
@@ -46,27 +45,21 @@ public class DataLoader {
 							default: throw new InvalidCSVFormat(line);
 					}
 				}
-				catch(ArrayIndexOutOfBoundsException | IllegalArgumentException e){
-					throw new InvalidCSVFormat(line);
-				}
-			}
-		} catch (IOException e){
-        	throw new RuntimeException("Could not read file: " + CARDS_FILE_NAME, e);
-        }
+			br.close();
 		return cards;
 	}
 
 
  public static ArrayList<Cell> readCells() throws IOException {
         ArrayList<Cell> cells = new ArrayList<>();
-        try(BufferedReader br = new BufferedReader(new FileReader(CELLS_FILE_NAME))){
+        BufferedReader br = new BufferedReader(new FileReader(CELLS_FILE_NAME));
         	String line;
             while ((line = br.readLine())!= null) {
                 if (line.trim().isEmpty()) 
                 	continue;
                 String[] data = line.split(",");
     			String name = data[0].trim();
-                try {
+                
                     if (data.length == 3) {
                             Role role = Role.valueOf(data[1].trim().toUpperCase());
                             int energy = Integer.parseInt(data[2].trim());
@@ -78,28 +71,20 @@ public class DataLoader {
                         } else {
                             cells.add(new ContaminationSock(name, effect));
                         }
-                    } else {
-                        throw new InvalidCSVFormat(line);
                     }
-                }  catch (Exception e){
-                	throw new InvalidCSVFormat(line);
-                }
             }
-        } catch (IOException e){
-        	throw new RuntimeException("Could not read file: " + CELLS_FILE_NAME, e);
-        }
+            br.close();
         return cells;
  }
  
  public static ArrayList<Monster> readMonsters() throws IOException{
 	ArrayList<Monster> monsters = new ArrayList<>();
-	try(BufferedReader br = new BufferedReader(new FileReader(MONSTERS_FILE_NAME))){
+	BufferedReader br = new BufferedReader(new FileReader(MONSTERS_FILE_NAME));
 		String line;
 		while((line = br.readLine()) != null){
 			if(line.trim().isEmpty())
 				continue;
 			String[] data = line.split(",");
-			try{
 				String monsterType = data[0];
 				String name = data[1].trim();
 				String description = data[2].trim();
@@ -112,13 +97,8 @@ public class DataLoader {
 				case "MULTITASKER" : monsters.add(new MultiTasker(name, description, role, energy)); break;
 				case "DASHER" : monsters.add(new Dasher(name, description, role, energy)); break;
 				}
-			} catch (Exception e){
-            	throw new InvalidCSVFormat(line);
-            }
-		}
-	} catch (Exception e){
-		throw new RuntimeException("Could not read file: " + MONSTERS_FILE_NAME, e);
 	}
+		br.close();
 	return monsters;
 }
 
