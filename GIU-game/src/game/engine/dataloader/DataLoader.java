@@ -85,7 +85,7 @@ public class DataLoader {
 			if(line.trim().isEmpty())
 				continue;
 			String[] data = line.split(",");
-				String monsterType = data[0];
+				String monsterType = data[0].trim();
 				String name = data[1].trim();
 				String description = data[2].trim();
 				Role role = Role.valueOf(data[3].trim().toUpperCase());
