@@ -9,10 +9,10 @@ import java.util.Collections;
 
 public class Game {
 
-    private final Board board;
-    private final ArrayList<Monster> allMonsters;
-    private final Monster player;
-    private final Monster opponent;
+    private Board board;
+    private ArrayList<Monster> allMonsters;
+    private Monster player;
+    private Monster opponent;
     private Monster current;
 
     public Game(Role playerRole) throws IOException {

@@ -1,24 +1,27 @@
 package game.engine;
+import game.engine.dataloader.*;
 import game.engine.cells.*;
 import game.engine.Constants;
+
+import java.io.IOException;
 import java.util.*;
+
 import game.engine.monsters.*;
 import game.engine.cards.*;
 import game.engine.dataloader.*;
 
 public class Board {
 	
-	private  Cell[][] boardCells;
-	private  static ArrayList<Monster> stationedMonsters;
-	private  static ArrayList<Card> originalCards;
+	private final Cell[][] boardCells;
+	private static ArrayList<Monster> stationedMonsters;
+	private static  ArrayList<Card> originalCards;
 	public  static ArrayList<Card> cards;
 	
-	public Board(ArrayList<Card> readCards){
+	public Board(ArrayList<Card> readCards) throws IOException{
 		boardCells = new Cell[Constants.BOARD_ROWS][Constants.BOARD_COLS];
 		stationedMonsters = new ArrayList<>();
 		cards = new ArrayList<>();
-		originalCards.clear();
-		originalCards.addAll(readCards); 
+		originalCards = readCards;
 	}
 	
 	public Cell[][] getBoardCells(){
