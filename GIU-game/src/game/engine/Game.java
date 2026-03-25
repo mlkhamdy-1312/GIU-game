@@ -32,7 +32,7 @@ public class Game {
             }
         }
         Collections.shuffle(candidates);
-        return candidates.get(0); // didnt know how to do it , its a chat gpt method
+        return candidates.get(0); 
     }
 
     public Board getBoard() {

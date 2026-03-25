@@ -64,6 +64,10 @@ public abstract class Monster implements Comparable<Monster> {
     }
 
     public void setPosition(int position) {
+    	if (position<0) {
+    		this.position = Constants.STARTING_POSITION;
+    	}
+    	else
         this.position = position % Constants.BOARD_SIZE;
     }
 
